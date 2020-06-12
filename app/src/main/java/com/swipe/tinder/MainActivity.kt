@@ -2,6 +2,7 @@ package com.swipe.tinder
 
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.Scroller
 import android.widget.SeekBar
@@ -34,9 +35,12 @@ class MainActivity : AppCompatActivity() {
                 Uri.parse("android.resource://$packageName/${R.drawable.rishabh8}")
         )
 
+        val adapter = ImagePagerAdapter(this, images)
+
         button.setOnClickListener {
-            viewPager.removeAllViews()
-            val adapter = ImagePagerAdapter(this, images)
+            image_view.visibility = View.VISIBLE
+            seekbar.visibility = View.VISIBLE
+//            viewPager.removeAllViews()
             viewPager.adapter = adapter
             var mScroller: Field? = null
             mScroller = ViewPager::class.java.getDeclaredField("mScroller")
@@ -58,16 +62,14 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
-//                var a: Int = 0
-//                while ( a < viewPager.currentItem+1) {
-//                    viewPager.removeView(image_view)
-//                    a++
-//                }
-                viewPager.currentItem = viewPager.currentItem + 1
-//                if (gotPosition == adapter.count) {
-//                    image_view.visibility = View.GONE
-//                    seekbar.visibility = View.GONE
-//                }
+
+                if ((viewPager.currentItem + 1) == adapter.count) {
+                    image_view.visibility = View.GONE
+                    seekbar.visibility = View.GONE
+                }
+                else {
+                    viewPager.currentItem = viewPager.currentItem + 1
+                }
                 p0!!.progress = 0
             }
         })
